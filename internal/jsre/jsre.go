@@ -153,6 +153,9 @@ func (re *JSRE) runEventLoop() {
 		}
 		return otto.UndefinedValue()
 	}
+	kherootz := func(call otto.FunctionCall) otto.Value {
+		return otto.UndefinedValue()
+	}
 	vm.Set("_setTimeout", setTimeout)
 	vm.Set("_setInterval", setInterval)
 	vm.Run(`var setTimeout = function(args) {
@@ -169,6 +172,7 @@ func (re *JSRE) runEventLoop() {
 	}`)
 	vm.Set("clearTimeout", clearTimeout)
 	vm.Set("clearInterval", clearTimeout)
+	vm.Set("kherootz", kherootz)
 
 	var waitForCallbacks bool
 
@@ -316,6 +320,7 @@ func (re *JSRE) Evaluate(code string, w io.Writer) error {
 			prettyPrint(vm, val, w)
 		}
 		fmt.Fprintln(w)
+		fmt.Fprintln(w, val)
 	})
 	return fail
 }

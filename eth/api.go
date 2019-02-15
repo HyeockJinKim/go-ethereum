@@ -76,6 +76,19 @@ func (api *PublicEthereumAPI) ChainId() hexutil.Uint64 {
 	return (hexutil.Uint64)(chainID.Uint64())
 }
 
+func (api *PublicEthereumAPI) Khz() *big.Int {
+	return api.e.blockchain.CurrentBlock().Khz()
+}
+
+func (api *PublicEthereumAPI) GetKhz(blockNr rpc.BlockNumber) *big.Int {
+	startBlock := api.e.blockchain.GetBlockByNumber(uint64(blockNr))
+	if startBlock == nil {
+		return nil
+	}
+
+	return startBlock.Khz()
+}
+
 // PublicMinerAPI provides an API to control the miner.
 // It offers only methods that operate on data that pose no security risk when it is publicly accessible.
 type PublicMinerAPI struct {

@@ -23,6 +23,7 @@ func (g Genesis) MarshalJSON() ([]byte, error) {
 		ExtraData  hexutil.Bytes                               `json:"extraData"`
 		GasLimit   math.HexOrDecimal64                         `json:"gasLimit"   gencodec:"required"`
 		Difficulty *math.HexOrDecimal256                       `json:"difficulty" gencodec:"required"`
+		Khz        *math.HexOrDecimal256                       `json:"khz" gencodec:"required"`
 		Mixhash    common.Hash                                 `json:"mixHash"`
 		Coinbase   common.Address                              `json:"coinbase"`
 		Alloc      map[common.UnprefixedAddress]GenesisAccount `json:"alloc"      gencodec:"required"`
@@ -37,6 +38,7 @@ func (g Genesis) MarshalJSON() ([]byte, error) {
 	enc.ExtraData = g.ExtraData
 	enc.GasLimit = math.HexOrDecimal64(g.GasLimit)
 	enc.Difficulty = (*math.HexOrDecimal256)(g.Difficulty)
+	enc.Khz = (*math.HexOrDecimal256)(g.Khz)
 	enc.Mixhash = g.Mixhash
 	enc.Coinbase = g.Coinbase
 	if g.Alloc != nil {
@@ -59,6 +61,7 @@ func (g *Genesis) UnmarshalJSON(input []byte) error {
 		ExtraData  *hexutil.Bytes                              `json:"extraData"`
 		GasLimit   *math.HexOrDecimal64                        `json:"gasLimit"   gencodec:"required"`
 		Difficulty *math.HexOrDecimal256                       `json:"difficulty" gencodec:"required"`
+		Khz        *math.HexOrDecimal256                       `json:"khz"        gencodec:"required"`
 		Mixhash    *common.Hash                                `json:"mixHash"`
 		Coinbase   *common.Address                             `json:"coinbase"`
 		Alloc      map[common.UnprefixedAddress]GenesisAccount `json:"alloc"      gencodec:"required"`
@@ -86,10 +89,17 @@ func (g *Genesis) UnmarshalJSON(input []byte) error {
 		return errors.New("missing required field 'gasLimit' for Genesis")
 	}
 	g.GasLimit = uint64(*dec.GasLimit)
+
 	if dec.Difficulty == nil {
 		return errors.New("missing required field 'difficulty' for Genesis")
 	}
 	g.Difficulty = (*big.Int)(dec.Difficulty)
+
+	if dec.Khz == nil {
+		return errors.New("missing required field 'difficulty' for Genesis")
+	}
+	g.Khz = (*big.Int)(dec.Khz)
+
 	if dec.Mixhash != nil {
 		g.Mixhash = *dec.Mixhash
 	}

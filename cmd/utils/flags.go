@@ -676,6 +676,11 @@ var (
 		Usage: "External EVM configuration (default = built-in interpreter)",
 		Value: "",
 	}
+	KhzFlag = cli.StringFlag{
+		Name:  "khz",
+		Usage: "Print kherootz one more",
+		Value: "",
+	}
 )
 
 // MakeDataDir retrieves the currently requested data directory, terminating
@@ -1342,6 +1347,10 @@ func SetEthConfig(ctx *cli.Context, stack *node.Node, cfg *eth.Config) {
 
 	if ctx.GlobalIsSet(EVMInterpreterFlag.Name) {
 		cfg.EVMInterpreter = ctx.GlobalString(EVMInterpreterFlag.Name)
+	}
+
+	if ctx.GlobalIsSet(KhzFlag.Name) {
+		cfg.Khz = ctx.GlobalString(KhzFlag.Name)
 	}
 
 	// Override any default configs for hard coded networks.

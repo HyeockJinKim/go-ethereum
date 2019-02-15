@@ -464,6 +464,13 @@ web3._extend({
 			inputFormatter: [web3._extend.formatters.inputAddressFormatter, null]
 		}),
 		new web3._extend.Method({
+			name: 'getKhz',
+			call: 'eth_getKhz',
+			params: 1,
+			inputFormatter: [web3._extend.formatters.inputBlockNumberFormatter],
+			outputFormatter: web3._extend.utils.outputBigNumberFormatter
+		}),
+		new web3._extend.Method({
 			name: 'resend',
 			call: 'eth_resend',
 			params: 3,
@@ -513,6 +520,11 @@ web3._extend({
 				}
 				return formatted;
 			}
+		}),
+        new web3._extend.Property({
+			name: 'khz',
+			getter: 'eth_khz',
+			outputFormatter: web3._extend.utils.outputBigNumberFormatter
 		}),
 	]
 });

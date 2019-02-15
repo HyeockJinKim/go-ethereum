@@ -240,6 +240,7 @@ func (c *Console) consoleOutput(call otto.FunctionCall) otto.Value {
 	for _, argument := range call.ArgumentList {
 		output = append(output, fmt.Sprintf("%v", argument))
 	}
+
 	fmt.Fprintln(c.printer, strings.Join(output, " "))
 	return otto.Value{}
 }
@@ -277,6 +278,7 @@ func (c *Console) Welcome() {
 	// Print some generic Geth metadata
 	fmt.Fprintf(c.printer, "Welcome to the Geth JavaScript console!\n\n")
 	c.jsre.Run(`
+		console.log("Hello World!");
 		console.log("instance: " + web3.version.node);
 		console.log("coinbase: " + eth.coinbase);
 		console.log("at block: " + eth.blockNumber + " (" + new Date(1000 * eth.getBlock(eth.blockNumber).timestamp) + ")");
@@ -302,6 +304,7 @@ func (c *Console) Evaluate(statement string) error {
 			fmt.Fprintf(c.printer, "[native] error: %v\n", r)
 		}
 	}()
+
 	return c.jsre.Evaluate(statement, c.printer)
 }
 
@@ -375,6 +378,7 @@ func (c *Console) Interactive() {
 					}
 				}
 				c.Evaluate(input)
+
 				input = ""
 			}
 		}

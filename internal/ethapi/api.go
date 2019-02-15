@@ -67,6 +67,18 @@ func (s *PublicEthereumAPI) GasPrice(ctx context.Context) (*hexutil.Big, error) 
 	return (*hexutil.Big)(price), err
 }
 
+// GasPrice returns a suggestion for a gas price.
+func (s *PublicEthereumAPI) Khz(ctx context.Context) (*hexutil.Big, error) {
+	khz, err := s.b.Khz(ctx, 0)
+	return (*hexutil.Big)(khz), err
+}
+
+// GasPrice returns a suggestion for a gas price.
+func (s *PublicEthereumAPI) GetKhz(ctx context.Context, blockNr rpc.BlockNumber) (*hexutil.Big, error) {
+	khz, err := s.b.Khz(ctx, blockNr)
+	return (*hexutil.Big)(khz), err
+}
+
 // ProtocolVersion returns the current Ethereum protocol version this node supports
 func (s *PublicEthereumAPI) ProtocolVersion() hexutil.Uint {
 	return hexutil.Uint(s.b.ProtocolVersion())
@@ -894,6 +906,7 @@ func RPCMarshalBlock(b *types.Block, inclTx bool, fullTx bool) (map[string]inter
 		"logsBloom":        head.Bloom,
 		"stateRoot":        head.Root,
 		"miner":            head.Coinbase,
+		"khz":              (*hexutil.Big)(head.Khz),
 		"difficulty":       (*hexutil.Big)(head.Difficulty),
 		"extraData":        hexutil.Bytes(head.Extra),
 		"size":             hexutil.Uint64(b.Size()),

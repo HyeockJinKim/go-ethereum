@@ -24,6 +24,7 @@ func (h Header) MarshalJSON() ([]byte, error) {
 		ReceiptHash common.Hash    `json:"receiptsRoot"     gencodec:"required"`
 		Bloom       Bloom          `json:"logsBloom"        gencodec:"required"`
 		Difficulty  *hexutil.Big   `json:"difficulty"       gencodec:"required"`
+		Khz         *hexutil.Big   `json:"khz"              gencodec:"required"`
 		Number      *hexutil.Big   `json:"number"           gencodec:"required"`
 		GasLimit    hexutil.Uint64 `json:"gasLimit"         gencodec:"required"`
 		GasUsed     hexutil.Uint64 `json:"gasUsed"          gencodec:"required"`
@@ -42,6 +43,7 @@ func (h Header) MarshalJSON() ([]byte, error) {
 	enc.ReceiptHash = h.ReceiptHash
 	enc.Bloom = h.Bloom
 	enc.Difficulty = (*hexutil.Big)(h.Difficulty)
+	enc.Khz = (*hexutil.Big)(h.Khz)
 	enc.Number = (*hexutil.Big)(h.Number)
 	enc.GasLimit = hexutil.Uint64(h.GasLimit)
 	enc.GasUsed = hexutil.Uint64(h.GasUsed)
@@ -64,6 +66,7 @@ func (h *Header) UnmarshalJSON(input []byte) error {
 		ReceiptHash *common.Hash    `json:"receiptsRoot"     gencodec:"required"`
 		Bloom       *Bloom          `json:"logsBloom"        gencodec:"required"`
 		Difficulty  *hexutil.Big    `json:"difficulty"       gencodec:"required"`
+		Khz         *hexutil.Big    `json:"khz"              gencodec:"required"`
 		Number      *hexutil.Big    `json:"number"           gencodec:"required"`
 		GasLimit    *hexutil.Uint64 `json:"gasLimit"         gencodec:"required"`
 		GasUsed     *hexutil.Uint64 `json:"gasUsed"          gencodec:"required"`
@@ -108,6 +111,12 @@ func (h *Header) UnmarshalJSON(input []byte) error {
 		return errors.New("missing required field 'difficulty' for Header")
 	}
 	h.Difficulty = (*big.Int)(dec.Difficulty)
+
+	if dec.Khz == nil {
+		return errors.New("missing required field 'khz' for Header")
+	}
+	h.Khz = (*big.Int)(dec.Khz)
+
 	if dec.Number == nil {
 		return errors.New("missing required field 'number' for Header")
 	}

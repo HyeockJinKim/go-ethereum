@@ -175,6 +175,10 @@ var (
 		utils.MetricsInfluxDBPasswordFlag,
 		utils.MetricsInfluxDBHostTagFlag,
 	}
+
+	kherootzFlags = []cli.Flag{
+		utils.KhzFlag,
+	}
 )
 
 func init() {
@@ -209,6 +213,9 @@ func init() {
 		licenseCommand,
 		// See config.go
 		dumpConfigCommand,
+
+
+		khzCommand,
 	}
 	sort.Sort(cli.CommandsByName(app.Commands))
 
@@ -218,6 +225,7 @@ func init() {
 	app.Flags = append(app.Flags, debug.Flags...)
 	app.Flags = append(app.Flags, whisperFlags...)
 	app.Flags = append(app.Flags, metricsFlags...)
+	app.Flags = append(app.Flags, kherootzFlags...)
 
 	app.Before = func(ctx *cli.Context) error {
 		logdir := ""

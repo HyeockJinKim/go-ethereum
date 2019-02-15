@@ -105,6 +105,32 @@ func (b *EthAPIBackend) GetBlock(ctx context.Context, hash common.Hash) (*types.
 	return b.eth.blockchain.GetBlockByHash(hash), nil
 }
 
+func (b *EthAPIBackend) Khz(ctx context.Context, blockNr rpc.BlockNumber) (*big.Int, error) {
+	// Pending block is only known by the miner
+	if blockNr == rpc.PendingBlockNumber {
+		block := b.eth.miner.PendingBlock()
+		return block.Khz(), nil
+	}
+	// Otherwise resolve and return the block
+	if blockNr == rpc.LatestBlockNumber {
+		return b.eth.blockchain.CurrentBlock().Khz(), nil
+	}
+	return b.eth.blockchain.GetBlockByNumber(uint64(blockNr)).Khz(), nil
+}
+
+func (b *EthAPIBackend) GetKhz(ctx context.Context, blockNr rpc.BlockNumber) (*big.Int, error) {
+	// Pending block is only known by the miner
+	if blockNr == rpc.PendingBlockNumber {
+		block := b.eth.miner.PendingBlock()
+		return block.Khz(), nil
+	}
+	// Otherwise resolve and return the block
+	if blockNr == rpc.LatestBlockNumber {
+		return b.eth.blockchain.CurrentBlock().Khz(), nil
+	}
+	return b.eth.blockchain.GetBlockByNumber(uint64(blockNr)).Khz(), nil
+}
+
 func (b *EthAPIBackend) GetReceipts(ctx context.Context, hash common.Hash) (types.Receipts, error) {
 	return b.eth.blockchain.GetReceiptsByHash(hash), nil
 }

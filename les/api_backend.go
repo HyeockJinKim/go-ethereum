@@ -75,6 +75,22 @@ func (b *LesApiBackend) BlockByNumber(ctx context.Context, blockNr rpc.BlockNumb
 	return b.GetBlock(ctx, header.Hash())
 }
 
+func (b *LesApiBackend) Khz(ctx context.Context, blockNr rpc.BlockNumber) (*big.Int, error) {
+	header, err := b.HeaderByNumber(ctx, blockNr)
+	if header == nil || err != nil {
+		return nil, err
+	}
+	return (*header).Kh(), err
+}
+
+func (b *LesApiBackend) GetKhz(ctx context.Context, blockNr rpc.BlockNumber) (*big.Int, error) {
+	header, err := b.HeaderByNumber(ctx, blockNr)
+	if header == nil || err != nil {
+		return nil, err
+	}
+	return (*header).Kh(), err
+}
+
 func (b *LesApiBackend) StateAndHeaderByNumber(ctx context.Context, blockNr rpc.BlockNumber) (*state.StateDB, *types.Header, error) {
 	header, err := b.HeaderByNumber(ctx, blockNr)
 	if header == nil || err != nil {
